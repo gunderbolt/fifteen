@@ -6,7 +6,7 @@ from grid import Grid
 
 
 def main():
-    starting_grid = Grid(3, 3)
+    starting_grid = Grid(2, 3)
     moves = []
     found_combos = find_combos(starting_grid, moves)
     for puzzle,moves in found_combos:
@@ -17,14 +17,14 @@ def main():
     print(f'Puzzle: {starting_grid.rows}x{starting_grid.columns}')
     print(f'Found Combos: {len(found_combos)}')
 
-    test_puzzle = Grid(3, 3)
-    test_puzzle.values = [1, 2, 3, 4, 5, 6, 8, 7, None]
-    print('Test Puzzle in found combos? {}'
-          ''.format(any(puzzle[0]==test_puzzle for puzzle in found_combos)))
-#    test_puzzle = Grid(2, 3)
-#    test_puzzle.values = [1, 2, 3, 5, 4, None]
+#    test_puzzle = Grid(3, 3)
+#    test_puzzle.values = [1, 2, 3, 4, 5, 6, 8, 7, None]
 #    print('Test Puzzle in found combos? {}'
 #          ''.format(any(puzzle[0]==test_puzzle for puzzle in found_combos)))
+    test_puzzle = Grid(2, 3)
+    test_puzzle.values = [1, 2, 3, 5, 4, None]
+    print('Test Puzzle in found combos? {}'
+          ''.format(any(puzzle[0]==test_puzzle for puzzle in found_combos)))
 
 
 def find_combos(puzzle_grid, moves):
@@ -57,4 +57,7 @@ def find_combos(puzzle_grid, moves):
     return combos
 
 if __name__ == '__main__':
-    main()
+    import timeit
+    t = timeit.Timer('main()')
+    print(f'Executing 3 times: {t.timeit(3)} seconds')
+    # Executing 3 times: 8.805438807001337 seconds
