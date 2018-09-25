@@ -1,6 +1,6 @@
 # /usr/bin/python3
 
-from collections import deque
+from collections import deque, OrderedDict
 from copy import deepcopy
 from grid import Grid
 
@@ -9,7 +9,7 @@ def main():
     starting_grid = Grid(2, 3)
     moves = []
     found_combos = find_combos(starting_grid, moves)
-    for puzzle,moves in found_combos:
+    for puzzle,moves in found_combos.items():
         print(moves)
         puzzle.pprint()
         print()
@@ -31,8 +31,9 @@ def find_combos(puzzle_grid, moves):
     """ Take the current state of the puzzle and try each of the combos to find
     new states of the game board.
     """
+    combos = OrderedDict()
     start_combo = (puzzle_grid, moves)
-    combos = [start_combo]
+    combos[puzzle_grid] = moves
     new_combos = deque()
     new_combos.append(start_combo)
 
@@ -47,12 +48,12 @@ def find_combos(puzzle_grid, moves):
             except RuntimeError:
                 pass # Not a valid move
             else:
-                if not any(new_puzzle==puzzle[0] for puzzle in combos):
+                if new_puzzle not in combos:
                     # Record the move and recursively check for new moves
                     new_moves = deepcopy(moves)
                     new_moves.append(direction)
-                    combos.append((new_puzzle, deepcopy(new_moves)))
-                    new_combos.append((new_puzzle, deepcopy(new_moves)))
+                    combos[new_puzzle] = new_moves
+                    new_combos.append((new_puzzle, new_moves))
 
     return combos
 
